@@ -12,25 +12,14 @@
 
 using namespace std;
 
-typedef struct {
-	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
-}Indices;
-
-typedef struct {
-	std::vector< glm::vec3 > vertices;
-	std::vector< glm::vec2 > uvs;
-	std::vector< glm::vec3 > normals;
-	Indices indeces;
-}MeshData;
-
 
 MeshData Load_Object_Tile(const char* path)	// obj 파일 읽는 함수
 {
 	MeshData meshData;
 
-	meshData.indeces.vertexIndices.clear();
-	meshData.indeces.uvIndices.clear();
-	meshData.indeces.normalIndices.clear();
+	meshData.indices.vertexIndices.clear();
+	meshData.indices.uvIndices.clear();
+	meshData.indices.normalIndices.clear();
 	meshData.vertices.clear();
 	meshData.uvs.clear();
 	meshData.normals.clear();
@@ -67,9 +56,9 @@ MeshData Load_Object_Tile(const char* path)	// obj 파일 읽는 함수
 			for (int i = 0; i < 3; i++)
 			{
 				in >> vertexIndex[i] >> a >> uvIndex[i] >> a >> normalIndex[i];
-				meshData.indeces.vertexIndices.push_back(vertexIndex[i] - 1);
-				meshData.indeces.uvIndices.push_back(uvIndex[i] - 1);
-				meshData.indeces.normalIndices.push_back(normalIndex[i] - 1);
+				meshData.indices.vertexIndices.push_back(vertexIndex[i] - 1);
+				meshData.indices.uvIndices.push_back(uvIndex[i] - 1);
+				meshData.indices.normalIndices.push_back(normalIndex[i] - 1);
 			}
 		}
 	}
@@ -82,7 +71,7 @@ void Tile::InitBuff()
 {
 	MeshData tileData = Load_Object_Tile("tile.obj");
 	vertices = tileData.vertices;
-	indices = tileData.indeces;
+	indices = tileData.indices;
 
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
@@ -91,9 +80,9 @@ void Tile::InitBuff()
     glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), &vertices[0], GL_STATIC_DRAW);
 
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.vertexIndices.size() * sizeof(GLuint), &indices.vertexIndices[0], GL_STATIC_DRAW);
+    //glGenBuffers(1, &EBO);
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.vertexIndices.size() * sizeof(GLuint), &indices.vertexIndices[0], GL_STATIC_DRAW);
 
 	// 컬러 관련 VBO...
 	//glGenBuffers(1, &VBO[1]);
@@ -119,40 +108,26 @@ void Tile::Draw()
 	//glutSwapBuffers();
 }
 
-bool Tile::CollisionCheck(GLuint cubeVBO, GLuint cubeVerticesCount) {
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-	GLfloat* cubeVertices = (GLfloat*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);	// Cube 의 현재 위치를 cube의 vbo 에서 읽어옴
-	if (cubeVertices == nullptr) {
-		std::cerr << "Failed to map cube vertices buffer" << std::endl;
-		// exit(-1);
-		return false;
-	}
+glm::vec3 Tile::GetTileCenter()
+{
+	return glm::vec3(x, 0.f, z);
+}
 
+bool Tile::isthereTile(glm::vec3 cube_floor_center) 
+{
 	GLfloat tileLeft = x - width / 2.0f;
 	GLfloat tileRight = x + width / 2.0f;
-	GLfloat tileFront = y - depth / 2.0f;
-	GLfloat tileBack = y + depth / 2.0f;
 	GLfloat tileTop = z + height / 2.0f;
 	GLfloat tileBottom = z - height / 2.0f;
 
-	for (int i = 0; i < cubeVerticesCount; i += 3) {	// 삼각형 매쉬의 각 정점 정보
-		GLfloat vertexX = cubeVertices[i];
-		GLfloat vertexY = cubeVertices[i + 1];
-		GLfloat vertexZ = cubeVertices[i + 2];
-
-		if (vertexY <= 0.f) {	// 큐브가 서 있을때?
-			if (vertexX >= tileLeft && vertexX <= tileRight &&
-				vertexZ >= tileBottom && vertexZ <= tileTop) {
-				glUnmapBuffer(GL_ARRAY_BUFFER);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				return true;	// 타일 위에 놓여진 상태
-			}
-			else {
-				glUnmapBuffer(GL_ARRAY_BUFFER);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				return false;	// 타일 밖에 놓여진 상태
-			}
+	if (cube_floor_center.y >= 0) {
+		if (cube_floor_center.x >= tileLeft && cube_floor_center.x <= tileRight &&
+			cube_floor_center.z >= tileBottom && cube_floor_center.z <= tileTop) {	// 부동소수점 비교연산 이슈로 범위 지정 후 비교
+			return true;	// 타일 위에 놓여진 상태
+		}
+		else {
+			return false;	// 타일 밖에 놓여진 상태
 		}
 	}
+	return false;
 }
-

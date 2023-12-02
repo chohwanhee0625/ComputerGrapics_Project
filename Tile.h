@@ -26,6 +26,7 @@ public:
 
     void InitBuff();
     void Draw();
-    bool CollisionCheck(GLuint cubeVBO, GLuint cubeVerticesCount);
+    bool isthereTile(glm::vec3 cube_floor_center);
+    glm::vec3 GetTileCenter();
 };
 
