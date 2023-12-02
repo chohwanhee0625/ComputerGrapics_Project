@@ -61,6 +61,7 @@ public:
 	glm::vec3 get_back_edge() const;
 	glm::vec3 get_left_edge() const;
 	glm::vec3 get_right_edge() const;
+	GLuint get_vertex_vbo() const;
 	void print_axis() const {
 		for (int i = 0; i < 3; ++i) {
 			cout << axis[i] << endl;
