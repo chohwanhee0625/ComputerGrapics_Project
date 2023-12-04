@@ -1,18 +1,21 @@
 #pragma once
 #include "Shape.h"
+
 #define BOTTOM_FACE 0
 #define TOP_FACE 1
 #define RIGHT_FACE 2
 #define LEFT_FACE 3
 #define FRONT_FACE 4
 #define BACK_FACE 5
+
 // 화면 안쪽 Front, 화면 왼쪽 Left
 extern ostream& operator<<(ostream& out, const glm::vec4& vec);
 extern ostream& operator<<(ostream& out, const glm::vec3& vec);
 class Cube {
 	static Shape shape;
+	unsigned int texture[6];
 	glm::mat4 world, normal_world;
-	glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,2,1)) }, T{ glm::translate(glm::mat4(1),glm::vec3(3,0,0)) }, R{ 1 }, old{ 1 }, axis{ 1 };
+	glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,2,1)) }, T{ 1 }, R{ 1 }, old{ 1 }, axis{ 1 };
 	glm::vec4 colors[6];
 	glm::vec4 faces[6];
 	glm::vec3 x{ 1,0,0 }, y{ 0,1,0 }, z{ 0,0,1 };
@@ -29,7 +32,7 @@ class Cube {
 		{"BACK", &Cube::get_back_edge},
 		{"LEFT", &Cube::get_left_edge},
 		{"RIGHT", &Cube::get_right_edge} };
-
+	void init_texture();
 public:
 	Cube() {
 		update_world();
@@ -48,7 +51,7 @@ public:
 		colors[5] = { 0,1,1,1 };
 	}
 	void init_buffer();
-	void draw() const;
+	void draw(const glm::mat4&, const glm::mat4&) const;
 	void update_world();
 	void resize(float sx, float sy, float sz);
 	void move(const string& dir);
@@ -57,11 +60,12 @@ public:
 	void slide(const glm::vec3& dir);
 	glm::vec3 get_center() const;
 	glm::vec4 get_floor_center() const;
+	glm::vec3 get_floor_lt() const;
+	glm::vec3 get_floor_rb() const;
 	glm::vec3 get_front_edge() const;
 	glm::vec3 get_back_edge() const;
 	glm::vec3 get_left_edge() const;
 	glm::vec3 get_right_edge() const;
-	GLuint get_vertex_vbo() const;
 	void print_axis() const {
 		for (int i = 0; i < 3; ++i) {
 			cout << axis[i] << endl;
