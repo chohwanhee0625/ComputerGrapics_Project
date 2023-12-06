@@ -45,7 +45,7 @@ void GameManager::load_stage() {
 	glutTimerFunc(10, timer, 0);
 	cube.init_buffer();
 	tiles.emplace_back(new Tile(0, 0));
-	tiles.emplace_back(new SlideTile(0, 1));
+	tiles.emplace_back(new SlideTile("BACK", 0, 1));
 	tiles.emplace_back(new Tile(0, 2));
 	tiles.emplace_back(new Tile(0, 3));
 	tiles.emplace_back(new Tile(0, 4));
