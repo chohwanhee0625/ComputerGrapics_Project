@@ -25,17 +25,23 @@ bool GameManager::is_collide(const Cube& cube, const Tile& tile) const {
 
 void GameManager::handle_collison() {
 	bool isFall = true;
-	for (auto iter = tiles.begin(); iter != tiles.end();) {
-		auto p = dynamic_cast<VanishTile*>(iter->get());
+	for (auto& tile : tiles) {
+		auto p = dynamic_cast<VanishTile*>(tile.get());
 		if (p != nullptr) {
-			if (p->get_isVanish()) {
-				iter = tiles.erase(iter);
+			if (p->get_isCollide()) {
+				p->set_isVanish(true);
 				continue;
 			}
 		}
-		++iter;
+
 	}
 	for (auto& tile : tiles) {
+		auto p = dynamic_cast<VanishTile*>(tile.get());
+		if (p != nullptr) {
+			if (p->get_isVanish()) {
+				continue;
+			}
+		}
 		if (is_collide(cube, *tile.get())) {
 			tile->handle_collision(cube);
 			isFall = false;
@@ -50,11 +56,17 @@ void GameManager::handle_collison() {
 void timer(int key) {
 	GM.animation(key);
 }
+
 void GameManager::restart() {
 	cube.reset();
-	tiles.clear();
-	load_stage();
+	for (auto& tile : tiles) {
+		auto p = dynamic_cast<VanishTile*>(tile.get());
+		if (p != nullptr) {
+			p->reset();
+		}
+	}
 }
+
 void GameManager::load_stage() {
 	cube.init_buffer();
 	ifstream file(stages[stage]);
@@ -111,7 +123,7 @@ void GameManager::render() const {
 
 void GameManager::handle_key(unsigned char key) {
 	cube.handle_key(key);
-	if (key == 'r') {
+	if (key == 'r' || key == 'R') {
 		restart();
 	}
 	glutPostRedisplay();

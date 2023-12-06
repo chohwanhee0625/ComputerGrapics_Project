@@ -17,7 +17,7 @@ public:
     Tile(float x, float z);
     Tile() = delete;
     virtual void load();
-    void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
+    virtual void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
 
     void update_world();
     virtual void handle_collision(Cube& cube);
