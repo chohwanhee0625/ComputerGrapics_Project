@@ -22,9 +22,9 @@ char* filetobuf(const char* file) {
 
 	return returnVal;
 }
-unsigned char* my_load_image(const string& fileName, int* width, int* height, int* channels) {
+unsigned char* my_load_image(const string& file_name, int* width, int* height, int* channels) {
 	stbi_set_flip_vertically_on_load(true);
-	return stbi_load(fileName.c_str(), width, height, channels, 0);
+	return stbi_load(file_name.c_str(), width, height, channels, 0);
 }
 
 void my_image_free(unsigned char* data) {

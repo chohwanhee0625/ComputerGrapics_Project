@@ -10,10 +10,10 @@ void Cube::init_buffer() {
 
 void Cube::init_texture() {
 	int widthImg, heightImg, numberOfChannel;
-	vector<string> fileNames{ "texture/mario.png","texture/luigi.png","texture/kinopio.png",
+	vector<string> file_names{ "texture/mario.png","texture/luigi.png","texture/kinopio.png",
 		"texture/koopa.png" ,"texture/goomba.png" ,"texture/peach.png" };
-	for (int i = 0; i < fileNames.size(); ++i) {
-		unsigned char* data = my_load_image(fileNames[i].c_str(), &widthImg, &heightImg, &numberOfChannel);
+	for (int i = 0; i < file_names.size(); ++i) {
+		unsigned char* data = my_load_image(file_names[i].c_str(), &widthImg, &heightImg, &numberOfChannel);
 		if (data != NULL) {
 			glGenTextures(1, &texture[i]);
 
