@@ -7,9 +7,9 @@ class Tile {
     unsigned int texture;
     glm::mat4 world, normal_world;
     glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,-0.3,1)) }, T{ 1 }, R{ 1 };
-    glm::vec4 color{ 1,1,1,1 };
 
 protected:
+    glm::vec4 color{ 1,1,1,1 };
     static Shape shape;
     void init_texture(const string& file_name);
 

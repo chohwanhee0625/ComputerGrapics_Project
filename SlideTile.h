@@ -3,7 +3,7 @@
 
 class SlideTile: public Tile{
 	string dir{ "BACK" };
-	map<string, string> img_map{ {"FRONT","texture/goomba.png"},{"BACK","texture/koopa.png"},{"LEFT","texture/luigi.png"},{"RIGHT","texture/kinopio.png"} };
+	map<string, string> img_map{ {"FRONT","texture/FrontSlide.png"},{"BACK","texture/BackSlide.png"},{"LEFT","texture/LeftSlide.png"},{"RIGHT","texture/RightSlide.png"} };
 public:
 	SlideTile() = delete;
 	SlideTile(const string& dir, float x, float z);

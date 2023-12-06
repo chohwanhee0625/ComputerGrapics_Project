@@ -43,6 +43,9 @@
     <None Include="shader\fragment.glsl" />
     <None Include="shader\vertex.glsl" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="stage0.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

@@ -12,7 +12,7 @@ Tile::Tile(float x, float z) {
 
 void Tile::load() {
 	shape.init_buffer();
-	init_texture("texture/mario.png");
+	init_texture("texture/tile.png");
 }
 
 void Tile::init_texture(const string& file_name) {

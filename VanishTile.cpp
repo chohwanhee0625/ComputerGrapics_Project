@@ -1,10 +1,5 @@
 #include "VanishTile.h"
 
-void VanishTile::load() {
-	shape.init_buffer();
-	init_texture("texture/peach.png");
-}
-
 void VanishTile::handle_collision(Cube& cube) {
 	isCollide = true;
 }
@@ -31,4 +26,6 @@ void VanishTile::reset() {
 	isVanish = false;
 	isCollide = false;
 }
-VanishTile::VanishTile(float x, float z) : Tile(x, z){}
+VanishTile::VanishTile(float x, float z) : Tile(x, z){
+	color = glm::vec4(1, 0.3, 0.3, 1);
+}

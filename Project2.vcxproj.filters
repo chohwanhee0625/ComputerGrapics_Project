@@ -77,4 +77,9 @@
       <Filter>소스 파일</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="stage0.txt">
+      <Filter>소스 파일</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
