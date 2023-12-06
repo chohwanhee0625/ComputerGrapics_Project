@@ -1,6 +1,6 @@
-#define STB_IMAGE_IMPLEMENTATION
 #include "Cube.h"
-#include "stb_image.h"
+#include "Tools.h"
+
 Shape Cube::shape{ "cube.obj" };
 
 void Cube::init_buffer() {
@@ -10,11 +10,10 @@ void Cube::init_buffer() {
 
 void Cube::init_texture() {
 	int widthImg, heightImg, numberOfChannel;
-	stbi_set_flip_vertically_on_load(true);
 	vector<string> fileNames{ "texture/mario.png","texture/luigi.png","texture/kinopio.png",
 		"texture/koopa.png" ,"texture/goomba.png" ,"texture/peach.png" };
 	for (int i = 0; i < fileNames.size(); ++i) {
-		unsigned char* data = stbi_load(fileNames[i].c_str(), &widthImg, &heightImg, &numberOfChannel, 0);
+		unsigned char* data = my_load_image(fileNames[i].c_str(), &widthImg, &heightImg, &numberOfChannel);
 		if (data != NULL) {
 			glGenTextures(1, &texture[i]);
 
@@ -30,7 +29,7 @@ void Cube::init_texture() {
 			else if (numberOfChannel == 3) {
 				glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 			}
-			stbi_image_free(data);
+			my_image_free(data);
 		}
 		else {
 			cout << "fail to load image" << endl;
@@ -67,13 +66,17 @@ void Cube::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 	}
 }
 
-void Cube::update() {
+bool Cube::update() {
 	if (state == "MOVE") {
-		move();
+		return move();
 	}
 	else if (state == "SLIDE") {
-		slide();
+		return slide();
 	}
+	else if (state == "FALL") {
+		fall();
+	}
+	return false;
 }
 
 void Cube::handle_key(unsigned char key) {
@@ -107,7 +110,7 @@ void Cube::resize(float sx, float sy, float sz) {
 	update_world();
 }
 
-void Cube::move() {
+bool Cube::move() {
 	R = glm::translate(glm::mat4(1), (this->*(move_rule[dir]))()) *
 		glm::rotate(glm::mat4(1), glm::radians(5.f), rotate_axis[dir]) *
 		glm::translate(glm::mat4(1), -(this->*(move_rule[dir]))()) * R;
@@ -117,17 +120,22 @@ void Cube::move() {
 		change_space();
 		check_floor_face();
 		set_Idle();
+		update_world();
+		return true;
 	}
 	update_world();
+	return false;
 }
-void Cube::slide() {
+bool Cube::slide() {
 	T *= glm::translate(glm::mat4(1), 0.1f * slide_dir[dir]);
 	degree += 10;
 	if (degree == 100) {
 		degree = 0;
 		set_Idle();
+		return true;
 	}
 	update_world();
+	return false;
 }
 void Cube::fall() {
 	T *= glm::translate(glm::mat4(1), glm::vec3(0, -0.1, 0));
@@ -141,6 +149,16 @@ bool Cube::try_slide(const string& dir) {
 	if (this->state == "IDLE") {
 		this->state = "SLIDE";
 		this->dir = dir;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+bool Cube::try_fall() {
+	if (this->state == "IDLE") {
+		this->state = "FALL";
+		this->dir = "NONE";
 		return true;
 	}
 	else {
@@ -161,13 +179,7 @@ void Cube::set_Idle() {
 	state = "IDLE";
 	dir = "NONE";
 }
-glm::vec3 Cube::get_center() const {
-	return world * glm::vec4(0, 0.5, 0, 1);
-}
 
-glm::vec4 Cube::get_floor_center() const {
-	return  world * faces[floor_id];
-}
 
 glm::vec3 Cube::get_front_edge() const {
 	auto edge = faces[floor_id];
@@ -245,15 +257,19 @@ glm::vec3 Cube::get_right_edge() const {
 	return R * S * edge;
 }
 
-glm::vec3 Cube::get_floor_lt() const {
-	auto center = get_floor_center();
+glm::vec3 Cube::get_center() const {
+	return world * faces[floor_id];
+}
+
+glm::vec3 Cube::get_lb() const {
+	auto center = get_center();
 	center.x -= 0.25;
 	center.z -= 0.25;
 	return center;
 }
 
-glm::vec3 Cube::get_floor_rb() const {
-	auto center = get_floor_center();
+glm::vec3 Cube::get_rt() const {
+	auto center = get_center();
 	center.x += 0.25;
 	center.z += 0.25;
 	return center;

@@ -2,6 +2,7 @@
 #include "Shape.h"
 #include "light.h"
 
+
 #define BOTTOM_FACE 0
 #define TOP_FACE 1
 #define RIGHT_FACE 2
@@ -10,8 +11,7 @@
 #define BACK_FACE 5
 
 // 화면 안쪽 Front, 화면 왼쪽 Left
-extern ostream& operator<<(ostream& out, const glm::vec4& vec);
-extern ostream& operator<<(ostream& out, const glm::vec3& vec);
+
 class Cube {
 	static Shape shape;
 	unsigned int texture[6];
@@ -42,8 +42,8 @@ class Cube {
 		{"BACK", &Cube::get_back_edge},
 		{"LEFT", &Cube::get_left_edge},
 		{"RIGHT", &Cube::get_right_edge} };
-	void move();
-	void slide();
+	bool move();
+	bool slide();
 	void set_Idle();
 	void change_space();
 	void check_floor_face();
@@ -64,14 +64,15 @@ public:
 		faces[BACK_FACE] = glm::vec4{ 0,0.5,-0.5,1 };
 	}
 	void handle_key(unsigned char key);
-	void update();
+	bool update();
 	void init_buffer();
 	void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
 	void resize(float sx, float sy, float sz);
 	void fall();
 	bool try_slide(const string& dir);
+	bool try_fall();
 	glm::vec3 get_center() const;
-	glm::vec4 get_floor_center() const;
-	glm::vec3 get_floor_lt() const;
-	glm::vec3 get_floor_rb() const;
+	glm::vec3 get_lb() const;
+	glm::vec3 get_rt() const;
+	void handle_collision(){}
 };
