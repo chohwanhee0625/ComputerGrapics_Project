@@ -24,16 +24,16 @@ void GameManager::handle_key(unsigned char key) {
 		cube.fall();
 	}
 	else if (key == 'z') {
-		cube.set_slide("FRONT");
+		cube.try_slide("FRONT");
 	}
 	else if (key == 'x') {
-		cube.set_slide("BACK");
+		cube.try_slide("BACK");
 	}
 	else if (key == 'c') {
-		cube.set_slide("LEFT");
+		cube.try_slide("LEFT");
 	}
 	else if (key == 'v') {
-		cube.set_slide("RIGHT");
+		cube.try_slide("RIGHT"); 
 	}
 	else if (key == 'q') {
 		cout << cube.get_floor_center() << endl;

@@ -21,6 +21,7 @@ class Cube {
 	glm::vec4 faces[6];
 	string state = "IDLE";
 	string dir = "NONE";
+
 	int floor_id = BOTTOM_FACE;
 	int degree = 0;
 	map<string, glm::vec3> rotate_axis{
@@ -48,6 +49,10 @@ class Cube {
 	void check_floor_face();
 	void init_texture();
 	void update_world();
+	glm::vec3 get_front_edge() const;
+	glm::vec3 get_back_edge() const;
+	glm::vec3 get_left_edge() const;
+	glm::vec3 get_right_edge() const;
 public:
 	Cube() {
 		update_world();
@@ -64,13 +69,9 @@ public:
 	void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
 	void resize(float sx, float sy, float sz);
 	void fall();
-	void set_slide(const string& dir);
+	bool try_slide(const string& dir);
 	glm::vec3 get_center() const;
 	glm::vec4 get_floor_center() const;
 	glm::vec3 get_floor_lt() const;
 	glm::vec3 get_floor_rb() const;
-	glm::vec3 get_front_edge() const;
-	glm::vec3 get_back_edge() const;
-	glm::vec3 get_left_edge() const;
-	glm::vec3 get_right_edge() const;
 };

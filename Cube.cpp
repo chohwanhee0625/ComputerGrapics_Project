@@ -70,19 +70,9 @@ void Cube::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 void Cube::update() {
 	if (state == "MOVE") {
 		move();
-		if (degree == 90) {
-			degree = 0;
-			change_space();
-			check_floor_face();
-			set_Idle();
-		}
 	}
 	else if (state == "SLIDE") {
 		slide();
-		if (degree == 100) {
-			degree = 0;
-			set_Idle();
-		}
 	}
 }
 
@@ -122,11 +112,21 @@ void Cube::move() {
 		glm::rotate(glm::mat4(1), glm::radians(5.f), rotate_axis[dir]) *
 		glm::translate(glm::mat4(1), -(this->*(move_rule[dir]))()) * R;
 	degree += 5;
+	if (degree == 90) {
+		degree = 0;
+		change_space();
+		check_floor_face();
+		set_Idle();
+	}
 	update_world();
 }
 void Cube::slide() {
-	T *= glm::translate(glm::mat4(1), 0.05f * slide_dir[dir]);
-	degree += 5;
+	T *= glm::translate(glm::mat4(1), 0.1f * slide_dir[dir]);
+	degree += 10;
+	if (degree == 100) {
+		degree = 0;
+		set_Idle();
+	}
 	update_world();
 }
 void Cube::fall() {
@@ -137,10 +137,14 @@ void Cube::fall() {
 void Cube::change_space() {
 	coord_space = glm::rotate(glm::mat4(1), glm::radians(90.f), rotate_axis[dir]) * coord_space;
 }
-void Cube::set_slide(const string& dir) {
+bool Cube::try_slide(const string& dir) {
 	if (this->state == "IDLE") {
 		this->state = "SLIDE";
 		this->dir = dir;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 void Cube::check_floor_face() {
