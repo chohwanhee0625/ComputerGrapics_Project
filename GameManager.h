@@ -25,4 +25,5 @@ public:
 	void animation(int key);
 	bool is_collide(const Cube& cube, const Tile& tile) const;
 	void handle_collison();
+	void restart();
 };

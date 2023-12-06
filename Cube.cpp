@@ -79,6 +79,20 @@ bool Cube::update() {
 	return false;
 }
 
+void Cube::reset() {
+	set_Idle();
+
+	S = glm::scale(glm::mat4(1),glm::vec3(1,2,1));
+	T = glm::mat4(1);
+	R = glm::mat4(1);
+
+	update_world();
+
+	coord_space = glm::mat4(1);
+	floor_id = BOTTOM_FACE;
+	degree = 0;
+}
+
 void Cube::handle_key(unsigned char key) {
 	if (state == "IDLE") {
 		if (key == 'w') {

@@ -50,9 +50,12 @@ void GameManager::handle_collison() {
 void timer(int key) {
 	GM.animation(key);
 }
-
+void GameManager::restart() {
+	cube.reset();
+	tiles.clear();
+	load_stage();
+}
 void GameManager::load_stage() {
-	glutTimerFunc(10, timer, 0);
 	cube.init_buffer();
 	ifstream file(stages[stage]);
 
@@ -108,23 +111,8 @@ void GameManager::render() const {
 
 void GameManager::handle_key(unsigned char key) {
 	cube.handle_key(key);
-	if (key == 'f') {
-		cube.fall();
-	}
-	else if (key == 'z') {
-		cube.try_slide("FRONT");
-	}
-	else if (key == 'x') {
-		cube.try_slide("BACK");
-	}
-	else if (key == 'c') {
-		cube.try_slide("LEFT");
-	}
-	else if (key == 'v') {
-		cube.try_slide("RIGHT"); 
-	}
-	else if (key == 'q') {
-		cout << cube.get_center() << endl;
+	if (key == 'r') {
+		restart();
 	}
 	glutPostRedisplay();
 }

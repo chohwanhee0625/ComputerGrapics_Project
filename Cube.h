@@ -75,4 +75,5 @@ public:
 	glm::vec3 get_lb() const;
 	glm::vec3 get_rt() const;
 	void handle_collision(){}
+	void reset();
 };

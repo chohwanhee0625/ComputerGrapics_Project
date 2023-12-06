@@ -78,6 +78,7 @@ void main(int argc, char** argv) {
 	GM.load_stage();
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(keyboard);
+	glutTimerFunc(10, timer, 0);
 	glutSpecialFunc(special_key);
 	glutReshapeFunc(Reshape);
 	glutMainLoop();
