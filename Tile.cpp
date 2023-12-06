@@ -12,14 +12,14 @@ Tile::Tile(float x, float z) {
 Tile::Tile() {
 	update_world();
 }
-void Tile::init_buffer() {
+void Tile::load() {
 	shape.init_buffer();
-	init_texture();
+	init_texture("texture/mario.png");
 }
 
-void Tile::init_texture() {
+void Tile::init_texture(const string& file_name) {
 	int widthImg, heightImg, numberOfChannel;
-	unsigned char* data = my_load_image("texture/mario.png", &widthImg, &heightImg, &numberOfChannel);
+	unsigned char* data = my_load_image(file_name.c_str(), &widthImg, &heightImg, &numberOfChannel);
 
 	if (data != NULL) {
 		glGenTextures(1, &texture);
@@ -74,10 +74,12 @@ void Tile::update_world() {
 	normal_world = glm::transpose(glm::inverse(world));
 }
 
+void Tile::handle_collision(Cube& cube){}
+
 glm::vec3 Tile::get_lb() const {
 	auto lt = world * glm::vec4(-0.5, 0, -0.5, 1);
 	return lt;
-}
+}  
 
 glm::vec3 Tile::get_rt() const {
 	auto rb = world * glm::vec4(0.5, 0, 0.5, 1);

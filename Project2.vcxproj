@@ -24,6 +24,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Shape.h" />
+    <ClInclude Include="SlideTile.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tools.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SlideTile.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tools.cpp" />
   </ItemGroup>

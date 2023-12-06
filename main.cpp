@@ -75,7 +75,7 @@ void main(int argc, char** argv) {
 	make_vertexShader();
 	make_fragmentShader();
 	shaderProgramID = make_shaderProgram();
-	GM.load_scene();
+	GM.load_stage();
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(keyboard);
 	glutSpecialFunc(special_key);

@@ -26,9 +26,8 @@ bool GameManager::is_collide(const Cube& cube, const Tile& tile) const {
 void GameManager::handle_collison() {
 	bool isFall = true;
 	for (auto& tile : tiles) {
-		if (is_collide(cube, tile)) {
-			cube.handle_collision();
-			tile.handle_collision();
+		if (is_collide(cube, *tile.get())) {
+			tile->handle_collision(cube);
 			isFall = false;
 		}
 	}
@@ -42,11 +41,16 @@ void timer(int key) {
 	GM.animation(key);
 }
 
-void GameManager::load_scene() {
+void GameManager::load_stage() {
 	glutTimerFunc(10, timer, 0);
 	cube.init_buffer();
+	tiles.emplace_back(new Tile(0, 0));
+	tiles.emplace_back(new SlideTile(0, 1));
+	tiles.emplace_back(new Tile(0, 2));
+	tiles.emplace_back(new Tile(0, 3));
+	tiles.emplace_back(new Tile(0, 4));
 	for (auto& tile : tiles) {
-		tile.init_buffer();
+		tile->load();
 	}
 }
 
@@ -56,7 +60,7 @@ void GameManager::render() const {
 	glEnable(GL_DEPTH_TEST);
 	cube.draw(camera.view, camera.proj, camera.EYE, light);
 	for (const auto& tile : tiles) {
-		tile.draw(camera.view, camera.proj, camera.EYE, light);
+		tile->draw(camera.view, camera.proj, camera.EYE, light);
 	}
 	glutSwapBuffers();
 }

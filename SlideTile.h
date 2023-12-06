@@ -1,9 +1,11 @@
 #pragma once
 #include "Tile.h"
 
-class SlideTile{
-	static Tile tile;
-
+class SlideTile: public Tile{
+	string dir{ "BACK" };
 public:
-	// 밟으면 큐브가 이동하는 함수
+	SlideTile();
+	SlideTile(float x, float z);
+	void load() override;
+	void handle_collision(Cube& cube) override;
 };
