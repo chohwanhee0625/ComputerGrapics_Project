@@ -23,16 +23,16 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="Rect.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="Tools.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tools.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -1,27 +1,29 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #include <vector>
-#include <random>
-#include <iostream>
 #include <map>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
 #include <gl/glm/glm.hpp>
 #include <gl/glm/ext.hpp>
 #include <gl/glm/gtc/matrix_transform.hpp>
-#include "Tools.h"
+
 
 using namespace std;
 extern GLuint shaderProgramID;
-extern uniform_real_distribution<float> randomColor;
-extern default_random_engine dre;
+
 struct Vector3 {
 	float x{ 0 }, y{ 0 }, z{ 0 };
 };
+
 struct Vector2 {
 	float x{ 0 }, y{ 0 };
 };
+
 struct Shape {
 	GLuint VBO, VAO, EBO, NBO, TBO;
 	vector<Vector3> vertices;

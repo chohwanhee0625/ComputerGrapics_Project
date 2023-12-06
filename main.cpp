@@ -8,11 +8,6 @@
 
 using namespace std;
 
-random_device rd;
-default_random_engine dre(rd());
-uniform_real_distribution<float> randomColor(0, 1);
-uniform_real_distribution<float> randomHeight(5, 15);
-uniform_real_distribution<float> randomSpeed(0.1, 0.5);
 ostream& operator<<(ostream& out, const glm::vec4& vec) {
 	auto x = vec.x, y = vec.y, z = vec.z;
 	//if (abs(x) <= 0.0001) {

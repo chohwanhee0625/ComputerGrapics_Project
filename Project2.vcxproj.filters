@@ -24,9 +24,6 @@
     <ClInclude Include="Light.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Shape.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
@@ -39,12 +36,12 @@
     <ClInclude Include="GameManager.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Tools.cpp">
@@ -54,6 +51,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
