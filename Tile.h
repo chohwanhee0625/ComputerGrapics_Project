@@ -1,32 +1,34 @@
 #pragma once
 
-struct Indices {
-    std::vector<unsigned int> vertexIndices, uvIndices, normalIndices;
-};
+#include "Shape.h"
+#include "light.h"
 
-struct MeshData {
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec2> uvs;
-    std::vector<glm::vec3> normals;
-    Indices indices;
-};
 
 class Tile {
 private:
+    static Shape shape;
+    unsigned int texture[6];
+    glm::mat4 world, normal_world, coord_space{ 1 };
+    glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,0.1,1)) }, T{ 1 }, R{ 1 };
+    glm::vec4 color{ 1,1,1,1 };
+    glm::mat4 world, normal_world, coord_space{ 1 };
+
+
     std::vector<glm::vec3> vertices;
-    Indices indices;
-    GLfloat x = 0, y = 0, z = 0;
-    GLfloat width = 0.2f, depth = 0.2f, height = 0.02f;
+    glm::vec3 tile_center = glm::vec3(0, 0, 0);
+    GLfloat width = 1.0f, depth = 1.0f, height = 0.02f;
 
     GLuint VAO, VBO[2], EBO;
     GLuint shaderProgramID;
 
 public:
-    Tile(GLfloat _x, GLfloat _y, GLfloat _z, GLuint _shaderProgramID);
+    Tile(GLfloat _x, GLfloat _y, GLfloat _z);
+    void init_buffer();
+    void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
+    void resize(float sx, float sy, float sz);
+    void update_world();
 
-    void InitBuff();
-    void Draw();
-    bool isthereTile(glm::vec3 cube_floor_center);
+    bool isthereTile(glm::vec3 cube_floor);
     glm::vec3 GetTileCenter();
 };
 
