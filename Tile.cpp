@@ -1,11 +1,46 @@
+#define STB_IMAGE_IMPLEMENTATION
 #include "Tile.h"
+#include "Tools.h"
 
-using namespace std;
 
 Shape Tile::shape{ "cube.obj" };
 
+Tile::Tile(float x, float z) {
+	T = glm::translate(glm::mat4(1), glm::vec3(x, 0, z));
+	update_world();
+}
+Tile::Tile() {
+	update_world();
+}
 void Tile::init_buffer() {
 	shape.init_buffer();
+	init_texture();
+}
+
+void Tile::init_texture() {
+	int widthImg, heightImg, numberOfChannel;
+	unsigned char* data = my_load_image("texture/mario.png", &widthImg, &heightImg, &numberOfChannel);
+
+	if (data != NULL) {
+		glGenTextures(1, &texture);
+
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		if (numberOfChannel == 4) {
+			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		}
+		else if (numberOfChannel == 3) {
+			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		}
+		my_image_free(data);
+	}
+	else {
+		cout << "fail to load image" << endl;
+	}
 }
 
 void Tile::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const {
@@ -30,11 +65,8 @@ void Tile::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 	glUniform4fv(color_loc, 1, glm::value_ptr(color));
 
 	light.lighting();
-
-	for (int i = 0; i < 6; ++i) {
-		glBindTexture(GL_TEXTURE_2D, texture[i]);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(int)));
-	}
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glDrawElements(GL_TRIANGLES, shape.indeices.size(), GL_UNSIGNED_INT, 0);
 }
 
 void Tile::update_world() {
@@ -42,30 +74,12 @@ void Tile::update_world() {
 	normal_world = glm::transpose(glm::inverse(world));
 }
 
-void Tile::resize(float sx, float sy, float sz) {
-	S = glm::scale(glm::mat4(1), glm::vec3(sx, sy, sz));
-	update_world();
+glm::vec3 Tile::get_lb() const {
+	auto lt = world * glm::vec4(-0.5, 0, -0.5, 1);
+	return lt;
 }
 
-glm::vec3 Tile::GetTileCenter()
-{
-	return glm::vec3(x, 0.f, z);
-}
-
-bool Tile::isthereTile(glm::vec3 lt, glm::vec3 rb)
-{
-	GLfloat tileLeft = tile_center.x - width / 2.0f;
-	GLfloat tileRight = x + width / 2.0f;
-	GLfloat tileTop = z + height / 2.0f;
-	GLfloat tileBottom = z - height / 2.0f;
-
-	if (cube_floor.x >= tileLeft && cube_floor.x <= tileRight &&
-		cube_floor.z >= tileBottom && cube_floor.z <= tileTop) {	// 부동소수점 비교연산 이슈로 범위 지정 후 비교
-			return true;	// 타일 위에 놓여진 상태
-	}
-	if ()
-
-	return false;
-	// 타일은 좌표 하나에 대해 bool 값만 리턴, GM은 tile.istherTile(cube.lt), (rb)
-	// 두 번 호출, 하나라도 false 뜨면 cube.fall 실행
+glm::vec3 Tile::get_rt() const {
+	auto rb = world * glm::vec4(0.5, 0, 0.5, 1);
+	return rb;
 }
