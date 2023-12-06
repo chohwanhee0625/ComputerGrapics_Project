@@ -1,9 +1,13 @@
 #pragma once
 #include "Tile.h"
 
-class VanishTile {
-	static Tile tile;
-
+class VanishTile :public Tile {
+	bool isVanish{ false };
 public:
-	// 밟으면 사라지는 함수?
+	VanishTile() = delete;
+	VanishTile(float x, float z);
+	void load() override;
+	void handle_collision(Cube& cube) override;
+
+	bool get_isVanish() const;
 };

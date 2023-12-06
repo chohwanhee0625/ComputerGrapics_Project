@@ -28,6 +28,7 @@
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tools.h" />
+    <ClInclude Include="VanishTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="SlideTile.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tools.cpp" />
+    <ClCompile Include="VanishTile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\fragment.glsl" />

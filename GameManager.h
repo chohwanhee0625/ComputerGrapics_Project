@@ -4,6 +4,8 @@
 #include "Light.h"
 #include "Tile.h"
 #include "SlideTile.h"
+#include "VanishTile.h"
+
 void timer(int key);
 class GameManager {
 	Light light{ {0,3,3} };

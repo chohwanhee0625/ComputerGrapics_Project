@@ -25,6 +25,15 @@ bool GameManager::is_collide(const Cube& cube, const Tile& tile) const {
 
 void GameManager::handle_collison() {
 	bool isFall = true;
+	for (auto iter = tiles.begin(); iter != tiles.end();) {
+		if (dynamic_cast<VanishTile*>(iter->get()) != nullptr) {
+			if (dynamic_cast<VanishTile*>(iter->get())->get_isVanish()) {
+				iter = tiles.erase(iter);
+				continue;
+			}
+		}
+		++iter;
+	}
 	for (auto& tile : tiles) {
 		if (is_collide(cube, *tile.get())) {
 			tile->handle_collision(cube);
@@ -45,7 +54,8 @@ void GameManager::load_stage() {
 	glutTimerFunc(10, timer, 0);
 	cube.init_buffer();
 	tiles.emplace_back(new Tile(0, 0));
-	tiles.emplace_back(new SlideTile("BACK", 0, 1));
+	tiles.emplace_back(new VanishTile(0, 1));
+	tiles.emplace_back(new VanishTile(1, 0));
 	tiles.emplace_back(new Tile(0, 2));
 	tiles.emplace_back(new Tile(0, 3));
 	tiles.emplace_back(new Tile(0, 4));
