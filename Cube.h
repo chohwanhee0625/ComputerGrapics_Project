@@ -19,13 +19,21 @@ class Cube {
 	glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,2,1)) }, T{ 1 }, R{ 1 };
 	glm::vec4 color{ 1,1,1,1 };
 	glm::vec4 faces[6];
-	glm::vec3 x{ 1,0,0 }, y{ 0,1,0 }, z{ 0,0,1 };
+	string state = "IDLE";
+	string dir = "NONE";
 	int floor_id = BOTTOM_FACE;
+	int degree = 0;
 	map<string, glm::vec3> rotate_axis{
 		{"FRONT",glm::vec3(-1,0,0)},
 		{"BACK",glm::vec3(1,0,0)},
 		{"LEFT",glm::vec3(0, 0, 1)},
 		{"RIGHT",glm::vec3(0,0,-1)} };
+
+	map<string, glm::vec3> slide_dir{
+	{"FRONT",glm::vec3(0,0,-1)},
+	{"BACK",glm::vec3(0,0,1)},
+	{"LEFT",glm::vec3(-1, 0, 0)},
+	{"RIGHT",glm::vec3(1,0,0)} };
 
 	typedef glm::vec3(Cube::* myFunc)() const;
 	map<string, myFunc> move_rule{
@@ -33,7 +41,13 @@ class Cube {
 		{"BACK", &Cube::get_back_edge},
 		{"LEFT", &Cube::get_left_edge},
 		{"RIGHT", &Cube::get_right_edge} };
+	void move();
+	void slide();
+	void set_Idle();
+	void change_space();
+	void check_floor_face();
 	void init_texture();
+	void update_world();
 public:
 	Cube() {
 		update_world();
@@ -44,15 +58,13 @@ public:
 		faces[FRONT_FACE] = glm::vec4{ 0,0.5,0.5,1 };
 		faces[BACK_FACE] = glm::vec4{ 0,0.5,-0.5,1 };
 	}
+	void handle_key(unsigned char key);
+	void update();
 	void init_buffer();
 	void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
-	void update_world();
 	void resize(float sx, float sy, float sz);
-	void move(const string& dir);
 	void fall();
-	void change_axis(const string& dir);
-	void check_floor_face();
-	void slide(const glm::vec3& dir);
+	void set_slide(const string& dir);
 	glm::vec3 get_center() const;
 	glm::vec4 get_floor_center() const;
 	glm::vec3 get_floor_lt() const;

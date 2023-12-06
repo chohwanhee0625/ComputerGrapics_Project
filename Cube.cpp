@@ -67,6 +67,46 @@ void Cube::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 	}
 }
 
+void Cube::update() {
+	if (state == "MOVE") {
+		move();
+		if (degree == 90) {
+			degree = 0;
+			change_space();
+			check_floor_face();
+			set_Idle();
+		}
+	}
+	else if (state == "SLIDE") {
+		slide();
+		if (degree == 100) {
+			degree = 0;
+			set_Idle();
+		}
+	}
+}
+
+void Cube::handle_key(unsigned char key) {
+	if (state == "IDLE") {
+		if (key == 'w') {
+			state = "MOVE";
+			dir = "FRONT";
+		}
+		else if (key == 's') {
+			state = "MOVE";
+			dir = "BACK";
+		}
+		else if (key == 'a') {
+			state = "MOVE";
+			dir = "LEFT";
+		}
+		else if (key == 'd') {
+			state = "MOVE";
+			dir = "RIGHT";
+		}
+	}
+}
+
 void Cube::update_world() {
 	world = T * R * S;
 	normal_world = glm::transpose(glm::inverse(world));
@@ -77,25 +117,32 @@ void Cube::resize(float sx, float sy, float sz) {
 	update_world();
 }
 
-void Cube::move(const string& dir) {
+void Cube::move() {
 	R = glm::translate(glm::mat4(1), (this->*(move_rule[dir]))()) *
 		glm::rotate(glm::mat4(1), glm::radians(5.f), rotate_axis[dir]) *
 		glm::translate(glm::mat4(1), -(this->*(move_rule[dir]))()) * R;
+	degree += 5;
+	update_world();
+}
+void Cube::slide() {
+	T *= glm::translate(glm::mat4(1), 0.05f * slide_dir[dir]);
+	degree += 5;
 	update_world();
 }
 void Cube::fall() {
 	T *= glm::translate(glm::mat4(1), glm::vec3(0, -0.1, 0));
 	update_world();
 }
-void Cube::slide(const glm::vec3& dir) {
-	T *= glm::translate(glm::mat4(1), dir);
-	update_world();
-}
 
-void Cube::change_axis(const string& dir) {
+void Cube::change_space() {
 	coord_space = glm::rotate(glm::mat4(1), glm::radians(90.f), rotate_axis[dir]) * coord_space;
 }
-
+void Cube::set_slide(const string& dir) {
+	if (this->state == "IDLE") {
+		this->state = "SLIDE";
+		this->dir = dir;
+	}
+}
 void Cube::check_floor_face() {
 	float minY = 200;
 	for (int i = 0; i < 6; ++i) {
@@ -106,7 +153,10 @@ void Cube::check_floor_face() {
 		}
 	}
 }
-
+void Cube::set_Idle() {
+	state = "IDLE";
+	dir = "NONE";
+}
 glm::vec3 Cube::get_center() const {
 	return world * glm::vec4(0, 0.5, 0, 1);
 }

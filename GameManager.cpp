@@ -6,8 +6,8 @@ void timer(int key) {
 }
 
 void GameManager::load_scene() {
+	glutTimerFunc(10, timer, 0);
 	cube.init_buffer();
-	cube.update_world();
 }
 
 void GameManager::render() const {
@@ -19,31 +19,24 @@ void GameManager::render() const {
 }
 
 void GameManager::handle_key(unsigned char key) {
-	if (key == 'w' && move_dir == "NONE") {
-		move_dir = "FRONT";
-		glutTimerFunc(10, timer, 0);
-	}
-	else if (key == 's' && move_dir == "NONE") {
-		move_dir = "BACK";
-		glutTimerFunc(10, timer, 0);
-	}
-	else if (key == 'a' && move_dir == "NONE") {
-		move_dir = "LEFT";
-		glutTimerFunc(10, timer, 0);
-	}
-	else if (key == 'd' && move_dir == "NONE") {
-		move_dir = "RIGHT";
-		glutTimerFunc(10, timer, 0);
-	}
-	else if (key == 'c') {
+	cube.handle_key(key);
+	if (key == 'f') {
 		cube.fall();
 	}
-	else if (key == 'r') {
-		cube.slide({ 0,0,1 });
-		cube.check_floor_face();
+	else if (key == 'z') {
+		cube.set_slide("FRONT");
+	}
+	else if (key == 'x') {
+		cube.set_slide("BACK");
+	}
+	else if (key == 'c') {
+		cube.set_slide("LEFT");
+	}
+	else if (key == 'v') {
+		cube.set_slide("RIGHT");
 	}
 	else if (key == 'q') {
-		exit(0);
+		cout << cube.get_floor_center() << endl;
 	}
 	glutPostRedisplay();
 }
@@ -53,19 +46,7 @@ void GameManager::handle_special_key(int key) {
 }
 
 void GameManager::animation(int key) {
-	if (move_dir != "NONE") {
-		static int i = 0;
-		if (i >= 90 / 5) {
-			i = 0;
-			cube.change_axis(move_dir);
-			move_dir = "NONE";
-			cube.check_floor_face();
-		}
-		else {
-			cube.move(move_dir);
-			++i;
-			glutTimerFunc(10, timer, 0);
-			glutPostRedisplay();
-		}
-	}
+	cube.update();
+	glutTimerFunc(10, timer, 0);
+	glutPostRedisplay();
 }
