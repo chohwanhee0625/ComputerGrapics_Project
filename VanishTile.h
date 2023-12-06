@@ -6,6 +6,7 @@ class VanishTile :public Tile {
 public:
 	VanishTile() = delete;
 	VanishTile(float x, float z);
+
 	void load() override;
 	void handle_collision(Cube& cube) override;
 

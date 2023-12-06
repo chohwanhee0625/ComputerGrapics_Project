@@ -12,6 +12,9 @@ class GameManager {
 	Cube cube;
 	vector<unique_ptr<Tile>> tiles;
 	Camera camera{ {0,3,3} };
+	vector<string> stages{"stage0.txt"};
+	int stage{ 0 };
+
 public:
 	GameManager() = default;
 	GameManager& operator=(const GameManager&) = delete;

@@ -26,8 +26,9 @@ bool GameManager::is_collide(const Cube& cube, const Tile& tile) const {
 void GameManager::handle_collison() {
 	bool isFall = true;
 	for (auto iter = tiles.begin(); iter != tiles.end();) {
-		if (dynamic_cast<VanishTile*>(iter->get()) != nullptr) {
-			if (dynamic_cast<VanishTile*>(iter->get())->get_isVanish()) {
+		auto p = dynamic_cast<VanishTile*>(iter->get());
+		if (p != nullptr) {
+			if (p->get_isVanish()) {
 				iter = tiles.erase(iter);
 				continue;
 			}
@@ -53,12 +54,42 @@ void timer(int key) {
 void GameManager::load_stage() {
 	glutTimerFunc(10, timer, 0);
 	cube.init_buffer();
-	tiles.emplace_back(new Tile(0, 0));
-	tiles.emplace_back(new VanishTile(0, 1));
-	tiles.emplace_back(new VanishTile(1, 0));
-	tiles.emplace_back(new Tile(0, 2));
-	tiles.emplace_back(new Tile(0, 3));
-	tiles.emplace_back(new Tile(0, 4));
+	ifstream file(stages[stage]);
+
+	if (!file.is_open()) {
+		std::cerr << "Failed to open file: " << stages[stage] << std::endl;
+		return;
+	}
+
+	string line;
+	while (std::getline(file, line)) {
+		istringstream iss(line);
+		string token;
+		iss >> token;
+
+		if (token == "T") {
+			// 일반 타일
+			float x, z;
+			iss >> x >> z;
+			tiles.emplace_back(new Tile(x, z));
+		}
+		else if (token == "S") {
+			// 슬라이드 타일
+			string dir;
+			float x, z;
+			iss >> dir >> x >> z;
+			tiles.emplace_back(new SlideTile(dir, x, z));
+		}
+		else if (token == "V") {
+			// 사라지는 타일
+			float x, z;
+			iss >> x >> z;
+			tiles.emplace_back(new VanishTile(x, z));
+		}
+	}
+
+	file.close();
+
 	for (auto& tile : tiles) {
 		tile->load();
 	}
