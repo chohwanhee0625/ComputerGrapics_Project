@@ -9,9 +9,7 @@ Tile::Tile(float x, float z) {
 	T = glm::translate(glm::mat4(1), glm::vec3(x, 0, z));
 	update_world();
 }
-Tile::Tile() {
-	update_world();
-}
+
 void Tile::load() {
 	shape.init_buffer();
 	init_texture("texture/mario.png");
