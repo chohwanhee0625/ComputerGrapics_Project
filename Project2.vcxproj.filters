@@ -45,6 +45,9 @@
     <ClInclude Include="VanishTile.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GoalTile.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp">
@@ -66,6 +69,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="VanishTile.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GoalTile.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

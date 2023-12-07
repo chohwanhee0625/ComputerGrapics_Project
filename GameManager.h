@@ -5,6 +5,7 @@
 #include "Tile.h"
 #include "SlideTile.h"
 #include "VanishTile.h"
+#include "GoalTile.h"
 
 void timer(int key);
 class GameManager {
@@ -12,12 +13,13 @@ class GameManager {
 	Cube cube;
 	vector<unique_ptr<Tile>> tiles;
 	Camera camera{ {0,3,3} };
-	vector<string> stages{"stage0.txt"};
+	vector<string> stages;
 	int stage{ 0 };
 
 public:
-	GameManager() = default;
+	GameManager();
 	GameManager& operator=(const GameManager&) = delete;
+	void next_stage();
 	void load_stage();
 	void render() const;
 	void handle_key(unsigned char key);

@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include <filesystem>
 GameManager GM;
 extern ostream& operator<<(ostream& out, const glm::vec4& vec);
 extern ostream& operator<<(ostream& out, const glm::vec3& vec);
@@ -48,6 +49,11 @@ void GameManager::handle_collison() {
 		}
 	}
 
+	auto p = dynamic_cast<GoalTile*>(tiles.back().get());
+	if (p->get_isGoal()) {
+		glutTimerFunc(10, timer, 1);
+	}
+
 	if (isFall) {
 		while (!cube.try_fall());
 	}
@@ -66,7 +72,11 @@ void GameManager::restart() {
 		}
 	}
 }
-
+GameManager::GameManager() {
+	for (const auto& iter : filesystem::directory_iterator("stages")) {
+		stages.emplace_back(iter.path().string());
+	}
+}
 void GameManager::load_stage() {
 	cube.init_buffer();
 	ifstream file(stages[stage]);
@@ -87,6 +97,7 @@ void GameManager::load_stage() {
 			float x, z;
 			iss >> x >> z;
 			tiles.emplace_back(new Tile(x, z));
+			tiles.back()->load();
 		}
 		else if (token == "S") {
 			// 슬라이드 타일
@@ -94,20 +105,23 @@ void GameManager::load_stage() {
 			float x, z;
 			iss >> dir >> x >> z;
 			tiles.emplace_back(new SlideTile(dir, x, z));
+			tiles.back()->load();
 		}
 		else if (token == "V") {
 			// 사라지는 타일
 			float x, z;
 			iss >> x >> z;
 			tiles.emplace_back(new VanishTile(x, z));
+			tiles.back()->load();
+		}
+		else if (token == "G") {
+			float x, z;
+			iss >> x >> z;
+			tiles.emplace_back(new GoalTile(x, z));
+			tiles.back()->load();
 		}
 	}
-
 	file.close();
-
-	for (auto& tile : tiles) {
-		tile->load();
-	}
 }
 
 void GameManager::render() const {
@@ -132,11 +146,34 @@ void GameManager::handle_key(unsigned char key) {
 void GameManager::handle_special_key(int key) {
 	glutPostRedisplay();
 }
+void GameManager::next_stage() {
+	cube.reset();
+	tiles.clear();
 
+	stage = min(stage + 1, int(stages.size() - 1));
+	load_stage();
+}
 void GameManager::animation(int key) {
-	if (cube.update()) {
-		handle_collison();
+	if (key == 0) {
+		if (cube.update()) {
+			handle_collison();
+		}
+		glutTimerFunc(10, timer, 0);
+		if (cube.get_center().y < -10) {
+			restart();
+		}
 	}
-	glutTimerFunc(10, timer, 0);
+	else if (key == 1) {
+		static int i = 0;
+		cout << "victory" << endl;
+		++i;
+		if (i < 20) {
+			glutTimerFunc(10, timer, 1);
+		}
+		else {
+			i = 0;
+			next_stage();
+		}
+	}
 	glutPostRedisplay();
 }
