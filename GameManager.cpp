@@ -115,6 +115,7 @@ void GameManager::load_stage() {
 			tiles.back()->load();
 		}
 		else if (token == "G") {
+			//골 타일 무조건 마지막 줄에 있어야 함
 			float x, z;
 			iss >> x >> z;
 			tiles.emplace_back(new GoalTile(x, z));
