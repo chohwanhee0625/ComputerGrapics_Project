@@ -12,12 +12,12 @@ Tile::Tile(float x, float z) {
 
 void Tile::load() {
 	shape.init_buffer();
-	init_texture("texture/tile.png");
+	init_texture();
 }
 
-void Tile::init_texture(const string& file_name) {
+void Tile::init_texture() {
 	int widthImg, heightImg, numberOfChannel;
-	unsigned char* data = my_load_image(file_name.c_str(), &widthImg, &heightImg, &numberOfChannel);
+	unsigned char* data = my_load_image(img_name.c_str(), &widthImg, &heightImg, &numberOfChannel);
 
 	if (data != NULL) {
 		glGenTextures(1, &texture);

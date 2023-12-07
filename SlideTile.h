@@ -7,6 +7,5 @@ class SlideTile: public Tile{
 public:
 	SlideTile() = delete;
 	SlideTile(const string& dir, float x, float z);
-	void load() override;
 	void handle_collision(Cube& cube) override;
 };

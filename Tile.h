@@ -10,13 +10,14 @@ class Tile {
 
 protected:
     glm::vec4 color{ 1,1,1,1 };
+    string img_name{ "texture/tile.png" };
     static Shape shape;
-    void init_texture(const string& file_name);
+    void init_texture();
 
 public:
     Tile(float x, float z);
     Tile() = delete;
-    virtual void load();
+    void load();
     virtual void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
 
     void update_world();

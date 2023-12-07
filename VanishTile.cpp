@@ -26,6 +26,6 @@ void VanishTile::reset() {
 	isVanish = false;
 	isCollide = false;
 }
-VanishTile::VanishTile(float x, float z) : Tile(x, z){
+VanishTile::VanishTile(float x, float z) :Tile(x, z){
 	color = glm::vec4(1, 0.3, 0.3, 1);
 }
