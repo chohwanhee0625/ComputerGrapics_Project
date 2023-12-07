@@ -13,6 +13,9 @@ protected:
     string img_name{ "texture/tile.png" };
     static Shape shape;
     void init_texture();
+    float tick_1 = -0.5;
+    float tick_2 = 0;
+    int rand_v = rand() % 2;
 
 public:
     Tile(float x, float z);
@@ -22,6 +25,9 @@ public:
 
     void update_world();
     virtual void handle_collision(Cube& cube);
+    void goal_animation_1();
+    void goal_animation_2();
+    void goal_animation_3();
 
     glm::vec3 get_lb() const;
     glm::vec3 get_rt() const;

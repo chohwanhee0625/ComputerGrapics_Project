@@ -159,7 +159,7 @@ void GameManager::animation(int key) {
 		if (cube.update()) {
 			handle_collison();
 		}
-		glutTimerFunc(10, timer, 0);
+		glutTimerFunc(20, timer, 0);
 		if (cube.get_center().y < -10) {
 			restart();
 		}
@@ -167,9 +167,14 @@ void GameManager::animation(int key) {
 	else if (key == 1) {
 		static int i = 0;
 		cout << "victory" << endl;
+
+		for (const auto& ptr : tiles) {
+			ptr->goal_animation_3();
+		}
 		++i;
-		if (i < 20) {
-			glutTimerFunc(10, timer, 1);
+
+		if (i < 40) {
+			glutTimerFunc(20, timer, 1);
 		}
 		else {
 			i = 0;
