@@ -12,7 +12,7 @@ class GameManager {
 	Light light{ {0,3,3} };
 	Cube cube;
 	vector<unique_ptr<Tile>> tiles;
-	Camera camera{ {-1,3,3} };
+	Camera camera{ {1,6,5} };
 	vector<string> stages;
 	int stage{ 0 };
 

@@ -168,8 +168,8 @@ void GameManager::animation(int key) {
 		static int i = 0;
 		cout << "victory" << endl;
 
-		for (const auto& ptr : tiles) {
-			ptr->goal_animation_3();
+		for (const auto& tile : tiles) {
+			tile->goal_animation_3();
 		}
 		++i;
 
