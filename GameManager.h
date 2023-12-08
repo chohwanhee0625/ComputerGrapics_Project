@@ -13,13 +13,13 @@
 #define END_MODE 2
 void timer(int key);
 class GameManager {
-	Light light{ {0,3,3} };
+	Light light{ {-3,3,3} };
 	Cube cube;
 	vector<unique_ptr<Tile>> tiles;
 	Camera camera{ {1,6,5} };
 	vector<string> stages;
-	UI bg, play_button;
-	int stage{ 1 };
+	UI bg, play_button, ending;
+	int stage{ 6 };
 	int mode{ TITLE_MODE };
 
 public:

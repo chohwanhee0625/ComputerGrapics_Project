@@ -1,7 +1,6 @@
 #include "GoalTile.h"
-GoalTile::GoalTile(float x, float z) :Tile(x, z) {
-	img_name = "texture/GoalTile.png";
-}
+static unsigned int texture;
+GoalTile::GoalTile(float x, float z) :Tile(x, z) { texture = &::texture; }
 
 void GoalTile::handle_collision(Cube& cube) {
 	auto cl = cube.get_lb().x, cb = cube.get_lb().z, cr = cube.get_rt().x, ct = cube.get_rt().z;
@@ -10,6 +9,10 @@ void GoalTile::handle_collision(Cube& cube) {
 	if (l <= cl && cl <= r && l <= cr && cr <= r && b <= cb && cb <= t && b <= ct && ct <= t) {
 		isGoal = true;
 	}
+}
+
+void GoalTile::load() {
+	init_texture(::texture, "texture/GoalTile.png");
 }
 
 bool GoalTile::get_isGoal() const {

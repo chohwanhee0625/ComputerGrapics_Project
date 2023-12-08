@@ -7,4 +7,5 @@ public:
 	GoalTile(float x, float z);
 	void handle_collision(Cube& cube) override;
 	bool get_isGoal() const;
+	static void load();
 };

@@ -52,9 +52,6 @@ void Cube::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 	auto tiworld_location = glGetUniformLocation(shaderProgramID, "normalWorld");
 	glUniformMatrix4fv(tiworld_location, 1, GL_FALSE, glm::value_ptr(normal_world));
 
-	auto viewPos = glGetUniformLocation(shaderProgramID, "viewPos");
-	glUniform3fv(viewPos, 1, glm::value_ptr(eye));
-
 	auto color_loc = glGetUniformLocation(shaderProgramID, "color");
 	glUniform4fv(color_loc, 1, glm::value_ptr(color));
 

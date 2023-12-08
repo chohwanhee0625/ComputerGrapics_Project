@@ -44,14 +44,17 @@ void UI::draw() const {
 	auto world_location = glGetUniformLocation(shaderProgramID, "world");
 	glUniformMatrix4fv(world_location, 1, GL_FALSE, glm::value_ptr(world));
 
-	auto tiworld_location = glGetUniformLocation(shaderProgramID, "tranInvWorld");
-	glUniformMatrix4fv(tiworld_location, 1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
+	auto tiworld_location = glGetUniformLocation(shaderProgramID, "normalWorld");
+	glUniformMatrix4fv(tiworld_location, 1, GL_FALSE, glm::value_ptr(world));
 
 	auto light_location = glGetUniformLocation(shaderProgramID, "lightPos");
 	glUniform3f(light_location, 0, 0, 0);
 
 	auto light_color = glGetUniformLocation(shaderProgramID, "lightColor");
 	glUniform3f(light_color, 1, 1, 1);
+
+	auto color_loc = glGetUniformLocation(shaderProgramID, "color");
+	glUniform4f(color_loc, 1, 1, 1, 1);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glDrawElements(GL_TRIANGLES, shape.indeices.size(), GL_UNSIGNED_INT, 0);

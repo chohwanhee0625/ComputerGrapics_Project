@@ -1,44 +1,18 @@
-#define STB_IMAGE_IMPLEMENTATION
 #include "Tile.h"
-#include "Tools.h"
 
 
 Shape Tile::shape{ "cube.obj" };
+static unsigned int texture;
 
 Tile::Tile(float x, float z) {
 	T = glm::translate(glm::mat4(1), glm::vec3(x, 0, z));
+	texture = &::texture;
 	update_world();
 }
 
 void Tile::load() {
 	shape.init_buffer();
-	init_texture();
-}
-
-void Tile::init_texture() {
-	int widthImg, heightImg, numberOfChannel;
-	unsigned char* data = my_load_image(img_name.c_str(), &widthImg, &heightImg, &numberOfChannel);
-
-	if (data != NULL) {
-		glGenTextures(1, &texture);
-
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		if (numberOfChannel == 4) {
-			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		}
-		else if (numberOfChannel == 3) {
-			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		}
-		my_image_free(data);
-	}
-	else {
-		cout << "fail to load image" << endl;
-	}
+	::init_texture(::texture, "texture/tile.png");
 }
 
 void Tile::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const {
@@ -63,7 +37,7 @@ void Tile::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 	glUniform4fv(color_loc, 1, glm::value_ptr(color));
 
 	light.lighting();
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, *texture);
 	glDrawElements(GL_TRIANGLES, shape.indeices.size(), GL_UNSIGNED_INT, 0);
 }
 

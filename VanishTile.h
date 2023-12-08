@@ -4,7 +4,6 @@
 class VanishTile :public Tile {
 	bool isVanish{ false };
 	bool isCollide{ false };
-
 public:
 	VanishTile() = delete;
 	VanishTile(float x, float z);

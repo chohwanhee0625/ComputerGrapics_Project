@@ -22,6 +22,34 @@ char* filetobuf(const char* file) {
 
 	return returnVal;
 }
+
+void init_texture(unsigned int& texture, const string& file_name, bool set_flip) {
+	int widthImg, heightImg, numberOfChannel;
+	stbi_set_flip_vertically_on_load(set_flip);
+	unsigned char* data = stbi_load(file_name.c_str(), &widthImg, &heightImg, &numberOfChannel, 0);
+
+	if (data != NULL) {
+		glGenTextures(1, &texture);
+
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		if (numberOfChannel == 4) {
+			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		}
+		else if (numberOfChannel == 3) {
+			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		}
+		stbi_image_free(data);
+	}
+	else {
+		cout << "fail to load image" << endl;
+	}
+}
+
 unsigned char* my_load_image(const string& file_name, int* width, int* height, int* channels, bool set_flip) {
 	stbi_set_flip_vertically_on_load(set_flip);
 	return stbi_load(file_name.c_str(), width, height, channels, 0);
