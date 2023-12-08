@@ -50,7 +50,7 @@ GLuint fragmentShader;
 
 void keyboard(unsigned char, int, int);
 void special_key(int, int, int);
-
+void mouse(int, int, int, int);
 extern GameManager GM;
 
 void main(int argc, char** argv) {
@@ -75,9 +75,10 @@ void main(int argc, char** argv) {
 	make_vertexShader();
 	make_fragmentShader();
 	shaderProgramID = make_shaderProgram();
-	GM.load_stage();
+	GM.load_game();
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(keyboard);
+	glutMouseFunc(mouse);
 	glutTimerFunc(10, timer, 0);
 	glutSpecialFunc(special_key);
 	glutReshapeFunc(Reshape);
@@ -154,4 +155,10 @@ void keyboard(unsigned char key, int x, int y) {
 }
 void special_key(int key, int x, int y) {
 	GM.handle_special_key(key);
+}
+
+void mouse(int button, int state, int x, int y) {
+	float glX, glY;
+	window2GL(x, y, width, height, glX, glY);
+	GM.handle_mouse(button, state, glX, glY);
 }

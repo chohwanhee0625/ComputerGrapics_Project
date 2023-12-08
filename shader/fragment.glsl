@@ -8,8 +8,6 @@ out vec4 fragColor;
 uniform vec4 color;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
-uniform vec3 viewPos;
-uniform float materialSH;
 uniform sampler2D outTexture;
 
 void main(){

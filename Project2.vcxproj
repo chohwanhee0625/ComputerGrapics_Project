@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GoalTile.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="VanishTile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="UI.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GoalTile.cpp" />
@@ -152,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

@@ -22,8 +22,8 @@ char* filetobuf(const char* file) {
 
 	return returnVal;
 }
-unsigned char* my_load_image(const string& file_name, int* width, int* height, int* channels) {
-	stbi_set_flip_vertically_on_load(true);
+unsigned char* my_load_image(const string& file_name, int* width, int* height, int* channels, bool set_flip) {
+	stbi_set_flip_vertically_on_load(set_flip);
 	return stbi_load(file_name.c_str(), width, height, channels, 0);
 }
 

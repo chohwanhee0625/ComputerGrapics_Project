@@ -72,13 +72,21 @@ void GameManager::restart() {
 		}
 	}
 }
-GameManager::GameManager() {
+
+
+void GameManager::load_game() {
 	for (const auto& iter : filesystem::directory_iterator("stages")) {
 		stages.emplace_back(iter.path().string());
 	}
-}
-void GameManager::load_stage() {
 	cube.init_buffer();
+	bg.load("texture/background.png");
+	play_button.load("texture/play_button.png");
+
+	play_button.resize(0.5, 0.1, 1);
+	play_button.move(0, -0.25, -0.001);
+}
+
+void GameManager::load_stage() {
 	ifstream file(stages[stage]);
 
 	if (!file.is_open()) {
@@ -130,8 +138,14 @@ void GameManager::render() const {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 	cube.draw(camera.view, camera.proj, camera.EYE, light);
-	for (const auto& tile : tiles) {
-		tile->draw(camera.view, camera.proj, camera.EYE, light);
+	if (mode == PLAY_MODE) {
+		for (const auto& tile : tiles) {
+			tile->draw(camera.view, camera.proj, camera.EYE, light);
+		}
+	}
+	bg.draw();
+	if (mode == TITLE_MODE) {
+		play_button.draw();
 	}
 	glutSwapBuffers();
 }
@@ -147,6 +161,7 @@ void GameManager::handle_key(unsigned char key) {
 void GameManager::handle_special_key(int key) {
 	glutPostRedisplay();
 }
+
 void GameManager::next_stage() {
 	cube.reset();
 	tiles.clear();
@@ -154,19 +169,19 @@ void GameManager::next_stage() {
 	stage = min(stage + 1, int(stages.size() - 1));
 	load_stage();
 }
+
 void GameManager::animation(int key) {
 	if (key == 0) {
-		if (cube.update()) {
+		if (cube.update() && mode == PLAY_MODE) {
 			handle_collison();
 		}
-		glutTimerFunc(20, timer, 0);
+		glutTimerFunc(10, timer, 0);
 		if (cube.get_center().y < -10) {
 			restart();
 		}
 	}
 	else if (key == 1) {
 		static int i = 0;
-		cout << "victory" << endl;
 
 		for (const auto& tile : tiles) {
 			tile->goal_animation();
@@ -182,4 +197,11 @@ void GameManager::animation(int key) {
 		}
 	}
 	glutPostRedisplay();
+}
+void GameManager::handle_mouse(int key, int state, float x, float y) {
+	if (key == GLUT_LEFT_BUTTON && state == GLUT_DOWN && play_button.isIn(x,y) && mode == TITLE_MODE) {
+		mode = PLAY_MODE;
+		cube.reset();
+		load_stage();
+	}
 }
