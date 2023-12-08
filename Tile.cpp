@@ -74,29 +74,12 @@ void Tile::update_world() {
 
 void Tile::handle_collision(Cube& cube){}
 
-void Tile::goal_animation_1() {
-	T *= glm::translate(glm::mat4(1), glm::vec3(0, -tick_1, 0));
-
-	tick_1 += 0.05;
-	update_world();
-}
-void Tile::goal_animation_2() {
-	if (rand_v == 1) {
-		T *= glm::translate(glm::mat4(1), glm::vec3(0, -tick_2, 0));
-	}
-	else {
-		T *= glm::translate(glm::mat4(1), glm::vec3(0, tick_2, 0));
-	}
-
-	tick_2 += 0.05;
-	update_world();
-}
-void Tile::goal_animation_3() {
+void Tile::goal_animation() {
 	glm::vec3 dir_v = glm::normalize(world * glm::vec4(0, 0, 0, 1));
 
-	T *= glm::translate(glm::mat4(1), glm::vec3(0.2 * dir_v.x, tick_2, 0.2 * dir_v.z));
+	T *= glm::translate(glm::mat4(1), glm::vec3(0.2 * dir_v.x, tick, 0.2 * dir_v.z));
 
-	tick_2 += 0.05;
+	tick += 0.05;
 	update_world();
 }
 
