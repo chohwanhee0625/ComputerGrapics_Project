@@ -133,6 +133,11 @@ void GameManager::load_stage() {
 			iss >> e.x >> e.y >> e.z >> a.x >> a.y >> a.z >> u.x >> u.y >> u.z;
 			camera.set_view(e, a, u);
 		}
+		else if (token == "CI") {
+			float l, r, t, b;
+			iss >> l >> r >> b >> t;
+			camera.set_ortho(l, r, b, t);
+		}
 	}
 	file.close();
 }

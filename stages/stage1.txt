@@ -1,16 +1,18 @@
-T 0 0
-T 1 0
-T 2 0
-S BACK 3 0
-T 3 1
-T 3 2
-T 3 3
-S LEFT 3 4
-T 2 4
-T 1 4
-T 0 4
-S FRONT -1 4
-T -1 3
-T -1 2
-T -1 1
-G -1 0
+T 0 0 
+T 0 1 
+T 0 2 
+S RIGHT 0 3 
+T 1 3 
+T 2 3 
+T 3 3 
+S FRONT 4 3 
+T 4 2 
+T 4 1 
+T 4 0 
+S LEFT 4 -1 
+T 3 -1 
+T 2 -1 
+T 1 -1 
+G 0 -1 
+C -2 6 10 2 0 2 0 1 0
+CI -5 5 -5 5

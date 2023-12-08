@@ -30,4 +30,7 @@ struct Camera {
 		AT = a;
 		UP = u;
 	}
+	void set_ortho(float l, float r, float b, float t) {
+		proj = glm::ortho(l, r, b, t, 0.1f, 1000.f);
+	}
 };
