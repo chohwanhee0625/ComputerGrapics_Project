@@ -81,7 +81,6 @@ void GameManager::load_game() {
 	cube.init_buffer();
 	bg.load("texture/background.png");
 	play_button.load("texture/play_button.png");
-
 	play_button.resize(0.5, 0.1, 1);
 	play_button.move(0, -0.25, -0.001);
 }
@@ -128,6 +127,11 @@ void GameManager::load_stage() {
 			iss >> x >> z;
 			tiles.emplace_back(new GoalTile(x, z));
 			tiles.back()->load();
+		}
+		else if (token == "C") {
+			glm::vec3 e, a, u;
+			iss >> e.x >> e.y >> e.z >> a.x >> a.y >> a.z >> u.x >> u.y >> u.z;
+			camera.set_view(e, a, u);
 		}
 	}
 	file.close();

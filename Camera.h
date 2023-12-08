@@ -14,7 +14,7 @@ struct Camera {
 	glm::mat4 view;
 	Camera(const glm::vec3& EYE) :EYE{ EYE } {
 		view = glm::lookAt(EYE, AT, UP);
-		proj = glm::perspective(fovy, 1.f, n, f);
+		proj = glm::ortho(-10.f, 10.f, -10.f, 10.f, 0.1f, 1000.f);
 	}
 	Camera() {
 		view = glm::lookAt(EYE, AT, UP);
@@ -23,5 +23,11 @@ struct Camera {
 	Camera(glm::vec3 EYE, glm::vec3 UP, glm::vec3 AT) :EYE{ EYE }, AT{ AT }, UP{ UP } {
 		view = glm::lookAt(EYE, AT, UP);
 		proj = glm::perspective(fovy, 1.f, n, f);
+	}
+	void set_view(const glm::vec3& e, const glm::vec3& a, const glm::vec3& u) {
+		view = glm::lookAt(e, a, u);
+		EYE = e;
+		AT = a;
+		UP = u;
 	}
 };
