@@ -1,0 +1,110 @@
+T -9 6
+T -8 6
+T -7 6
+T -4 6
+T -3 6
+S BACK -5 6
+S RIGHT -2 6
+S LEFT -10 5
+T -9 5
+T -8 5
+V -7 5
+V -6 5
+V -5 5
+V -4 5
+V -3 5
+V -2 5
+T -10 4
+T -9 4
+T -8 4
+V -7 4
+V -6 4
+T -5 4
+V -4 4
+V -3 4
+V -2 4
+S LEFT -12 3
+S LEFT -11 3
+S LEFT -9 3
+T -10 3
+V -7 3
+V -6 3
+V -5 3
+V -4 3
+V -3 3
+T -2 3
+T -1 3
+S RIGHT 0 3
+T -12 2
+T -11 2
+T -10 2
+V -7 2
+T -6 2
+T -5 2
+T -4 2
+T -1 2
+S LEFT -9 2
+S FRONT -3 2
+S RIGHT 0 2
+S RIGHT 1 2
+T -12 1
+T -11 1
+T -10 1
+V -9 1
+V -8 1
+V -7 1
+T -6 1
+T -4 1
+T -1 1
+T 0 1
+T 1 1
+T -12 0
+T -11 0
+T -10 0
+T -6 0
+T -5 0
+T -4 0
+T -1 0
+T 0 0
+T 1 0
+S RIGHT -9 0
+S FRONT -2 0
+T -12 -1
+T -11 -1
+T -1 -1
+T 0 -1
+T 1 -1
+S RIGHT -10 -1
+S LEFT -2 -1
+T -12 -2
+T -11 -2
+T -2 -2
+T -1 -2
+T 0 -2
+S RIGHT -10 -2
+S LEFT -3 -2
+S RIGHT 1 -2
+S RIGHT 1 -3
+T -12 -3
+T -11 -3
+T -10 -3
+V -9 -3
+T -8 -3
+T -7 -3
+T -6 -3
+T -5 -3
+V -4 -3
+T -3 -3
+T -2 -3
+T -1 -3
+T 0 -3
+S FRONT 0 -4
+S LEFT -13 -3
+S LEFT -13 -2
+S LEFT -13 -1
+S LEFT -13 0
+S LEFT -13 1
+S LEFT -13 2
+G -5 1
+C -8 5 11 -6 0 1 0 1 0
+CI -8 8 -5 5

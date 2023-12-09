@@ -179,6 +179,9 @@ void GameManager::handle_key(unsigned char key) {
 		mode = PLAY_MODE;
 		load_stage();
 	}
+	if (key == 27) {
+		exit(1);
+	}
 	glutPostRedisplay();
 }
 
