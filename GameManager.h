@@ -19,7 +19,7 @@ class GameManager {
 	Camera camera{ {1,6,5} };
 	vector<string> stages;
 	UI bg, play_button, ending;
-	int stage{ 6 };
+	int stage{ 5 };
 	int mode{ TITLE_MODE };
 
 public:

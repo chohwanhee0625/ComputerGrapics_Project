@@ -1,7 +1,16 @@
 #include "VanishTile.h"
 
 void VanishTile::handle_collision(Cube& cube) {
-	isCollide = true;
+	auto cl = cube.get_lb().x, cb = cube.get_lb().z, cr = cube.get_rt().x, ct = cube.get_rt().z;
+	auto l = get_lb().x, b = get_lb().z, r = get_rt().x, t = get_rt().z;
+
+	if (l <= cl && cl <= r && l <= cr && cr <= r && b <= cb && cb <= t && b <= ct && ct <= t) {
+		cube.try_fall();
+		isVanish = true;
+	}
+	else {
+
+	}
 }
 
 void VanishTile::set_isVanish(bool b) {
