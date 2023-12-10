@@ -51,6 +51,9 @@
     <ClInclude Include="UI.h">
       <Filter>소스 파일</Filter>
     </ClInclude>
+    <ClInclude Include="MySound.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cube.cpp">
@@ -78,6 +81,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MySound.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

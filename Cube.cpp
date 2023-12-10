@@ -2,38 +2,17 @@
 #include "Tools.h"
 
 Shape Cube::shape{ "cube.obj" };
+unsigned int Cube::texture[6];
+unique_ptr<MySound> Cube::move_sound;
 
-void Cube::init_buffer() {
+void Cube::load() {
 	shape.init_buffer();
-	init_texture();
-}
-
-void Cube::init_texture() {
-	int widthImg, heightImg, numberOfChannel;
+	move_sound.reset(new MySound("sound/cube_move.wav", false));
 	vector<string> file_names{ "texture/mario.png","texture/luigi.png","texture/kinopio.png",
-		"texture/koopa.png" ,"texture/goomba.png" ,"texture/peach.png" };
+	"texture/koopa.png" ,"texture/goomba.png" ,"texture/peach.png" };
+	glGenTextures(6, Cube::texture);
 	for (int i = 0; i < file_names.size(); ++i) {
-		unsigned char* data = my_load_image(file_names[i].c_str(), &widthImg, &heightImg, &numberOfChannel);
-		if (data != NULL) {
-			glGenTextures(1, &texture[i]);
-
-			glBindTexture(GL_TEXTURE_2D, texture[i]);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-			if (numberOfChannel == 4) {
-				glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			}
-			else if (numberOfChannel == 3) {
-				glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-			}
-			my_image_free(data);
-		}
-		else {
-			cout << "fail to load image" << endl;
-		}
+		init_texture(Cube::texture[i], file_names[i].c_str());
 	}
 }
 
@@ -58,7 +37,7 @@ void Cube::draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& e
 	light.lighting();
 
 	for (int i = 0; i < 6; ++i) {
-		glBindTexture(GL_TEXTURE_2D, texture[i]);
+		glBindTexture(GL_TEXTURE_2D, Cube::texture[i]);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(i * 6 * sizeof(int)));
 	}
 }
@@ -93,18 +72,22 @@ void Cube::reset() {
 void Cube::handle_key(unsigned char key) {
 	if (state == "IDLE") {
 		if (key == 'w') {
+			move_sound->play();
 			state = "MOVE";
 			dir = "FRONT";
 		}
 		else if (key == 's') {
+			move_sound->play();
 			state = "MOVE";
 			dir = "BACK";
 		}
 		else if (key == 'a') {
+			move_sound->play();
 			state = "MOVE";
 			dir = "LEFT";
 		}
 		else if (key == 'd') {
+			move_sound->play();
 			state = "MOVE";
 			dir = "RIGHT";
 		}
@@ -189,6 +172,7 @@ void Cube::check_floor_face() {
 void Cube::set_Idle() {
 	state = "IDLE";
 	dir = "NONE";
+	move_sound->stop();
 }
 
 

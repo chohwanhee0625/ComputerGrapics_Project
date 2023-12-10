@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MySound.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cube.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="VanishTile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MySound.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -162,7 +164,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>glew32.lib freeglut.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>glew32.lib freeglut.lib fmod_vc.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

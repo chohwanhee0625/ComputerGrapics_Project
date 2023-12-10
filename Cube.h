@@ -1,7 +1,7 @@
 #pragma once
 #include "Shape.h"
 #include "light.h"
-
+#include "MySound.h"
 
 #define BOTTOM_FACE 0
 #define TOP_FACE 1
@@ -14,16 +14,20 @@
 
 class Cube {
 	static Shape shape;
-	unsigned int texture[6];
+	static unsigned int texture[6];
+	static unique_ptr<MySound> move_sound;
+
 	glm::mat4 world, normal_world, coord_space{ 1 };
 	glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,2,1)) }, T{ 1 }, R{ 1 };
 	glm::vec4 color{ 1,1,1,1 };
 	glm::vec4 faces[6];
+
 	string state = "IDLE";
 	string dir = "NONE";
 
 	int floor_id = BOTTOM_FACE;
 	int degree = 0;
+
 	map<string, glm::vec3> rotate_axis{
 		{"FRONT",glm::vec3(-1,0,0)},
 		{"BACK",glm::vec3(1,0,0)},
@@ -42,13 +46,14 @@ class Cube {
 		{"BACK", &Cube::get_back_edge},
 		{"LEFT", &Cube::get_left_edge},
 		{"RIGHT", &Cube::get_right_edge} };
+
 	bool move();
 	bool slide();
 	void set_Idle();
 	void change_space();
 	void check_floor_face();
-	void init_texture();
 	void update_world();
+
 	glm::vec3 get_front_edge() const;
 	glm::vec3 get_back_edge() const;
 	glm::vec3 get_left_edge() const;
@@ -65,7 +70,7 @@ public:
 	}
 	void handle_key(unsigned char key);
 	bool update();
-	void init_buffer();
+	static void load();
 	void draw(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& eye, const Light& light) const;
 	void resize(float sx, float sy, float sz);
 	void fall();

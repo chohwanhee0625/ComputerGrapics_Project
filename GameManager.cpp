@@ -1,6 +1,8 @@
 #include "GameManager.h"
 #include <filesystem>
+
 GameManager GM;
+
 extern ostream& operator<<(ostream& out, const glm::vec4& vec);
 extern ostream& operator<<(ostream& out, const glm::vec3& vec);
 
@@ -78,7 +80,8 @@ void GameManager::load_game() {
 	for (const auto& iter : filesystem::directory_iterator("stages")) {
 		stages.emplace_back(iter.path().string());
 	}
-	cube.init_buffer();
+	MySound::Init();
+	Cube::load();
 	bg.load("texture/background.png");
 	play_button.load("texture/play_button.png");
 	Tile::load();
@@ -238,4 +241,7 @@ void GameManager::handle_mouse(int key, int state, float x, float y) {
 		cube.reset();
 		load_stage();
 	}
+}
+GameManager::~GameManager() {
+	MySound::Release();
 }

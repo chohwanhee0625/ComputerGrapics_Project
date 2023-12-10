@@ -19,11 +19,12 @@ class GameManager {
 	Camera camera{ {1,6,5} };
 	vector<string> stages;
 	UI bg, play_button, ending;
-	int stage{ 7 };
+	int stage{ 8 };
 	int mode{ TITLE_MODE };
 
 public:
 	GameManager() = default;
+	~GameManager();
 	GameManager& operator=(const GameManager&) = delete;
 	void next_stage();
 	void load_stage();
