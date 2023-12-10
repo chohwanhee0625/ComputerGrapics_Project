@@ -14,7 +14,7 @@ void main(){
 	vec3 normalVector = normalize(Nor);
 	vec3 lightVector = normalize(lightPos - fragPos);
 
-	float ambientLight = 0.2;
+	float ambientLight = 0.5;
 	vec3 ambient = ambientLight * vec3(1,1,1);
 
 	float diffuseLight = max(dot(normalVector,lightVector),0.0);
