@@ -53,6 +53,7 @@ void GameManager::handle_collison() {
 
 	auto p = dynamic_cast<GoalTile*>(tiles.back().get());
 	if (p->get_isGoal()) {
+		stage_clear->play(1.8f);
 		glutTimerFunc(10, timer, 1);
 	}
 
@@ -82,12 +83,15 @@ void GameManager::load_game() {
 	}
 	MySound::Init();
 	Cube::load();
-	bg.load("texture/background.png");
-	play_button.load("texture/play_button.png");
 	Tile::load();
 	SlideTile::load();
 	GoalTile::load();
-	ending.load("texture/congratulation.png");
+	UI::Init_buffer();
+	stage_clear.reset(new MySound("sound/clear.wav", false, 1.f));
+	bg.load("texture/background.png", "sound/bgm.wav", true, 0.3f);
+	bg.play_sound();
+	play_button.load("texture/play_button.png","sound/click_button.wav");
+	ending.load("texture/congratulation.png", "sound/victory.mp3", false, 1.f);
 	play_button.resize(0.5, 0.1, 1);
 	play_button.move(0, -0.25, -0.001);
 }
@@ -111,7 +115,6 @@ void GameManager::load_stage() {
 			float x, z;
 			iss >> x >> z;
 			tiles.emplace_back(new Tile(x, z));
-			//tiles.back()->load();
 		}
 		else if (token == "S") {
 			// 슬라이드 타일
@@ -119,21 +122,18 @@ void GameManager::load_stage() {
 			float x, z;
 			iss >> dir >> x >> z;
 			tiles.emplace_back(new SlideTile(dir, x, z));
-			//tiles.back()->load();
 		}
 		else if (token == "V") {
 			// 사라지는 타일
 			float x, z;
 			iss >> x >> z;
 			tiles.emplace_back(new VanishTile(x, z));
-			//tiles.back()->load();
 		}
 		else if (token == "G") {
 			//골 타일 무조건 마지막 줄에 있어야 함
 			float x, z;
 			iss >> x >> z;
 			tiles.emplace_back(new GoalTile(x, z));
-			//tiles.back()->load();
 		}
 		else if (token == "C") {
 			glm::vec3 e, a, u;
@@ -180,6 +180,8 @@ void GameManager::handle_key(unsigned char key) {
 	}
 	else if (key == 13 && mode == END_MODE) {
 		mode = PLAY_MODE;
+		ending.stop_sound();
+		bg.play_sound();
 		load_stage();
 	}
 	if (key == 27) {
@@ -195,13 +197,15 @@ void GameManager::handle_special_key(int key) {
 void GameManager::next_stage() {
 	cube.reset();
 	tiles.clear();
-
+	stage_clear->stop();
 	++stage;
 	if (stage < stages.size()) {
 		load_stage();
 	}
 	else {
 		mode = END_MODE;
+		bg.stop_sound();
+		ending.play_sound();
 		stage = 0;
 	}
 }
@@ -238,6 +242,7 @@ void GameManager::animation(int key) {
 void GameManager::handle_mouse(int key, int state, float x, float y) {
 	if (key == GLUT_LEFT_BUTTON && state == GLUT_DOWN && play_button.isIn(x,y) && mode == TITLE_MODE) {
 		mode = PLAY_MODE;
+		play_button.play_sound();
 		cube.reset();
 		load_stage();
 	}

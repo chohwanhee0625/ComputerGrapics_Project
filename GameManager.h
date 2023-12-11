@@ -21,7 +21,7 @@ class GameManager {
 	UI bg, play_button, ending;
 	int stage{ 8 };
 	int mode{ TITLE_MODE };
-
+	unique_ptr<MySound> stage_clear;
 public:
 	GameManager() = default;
 	~GameManager();
