@@ -4,10 +4,16 @@
 Shape Cube::shape{ "cube.obj" };
 unsigned int Cube::texture[6];
 unique_ptr<MySound> Cube::move_sound;
+unique_ptr<MySound> Cube::fall_sound;
+unique_ptr<MySound> Cube::slide_sound;
+
 
 void Cube::load() {
 	shape.init_buffer();
 	move_sound.reset(new MySound("sound/cube_move.wav", false));
+	fall_sound.reset(new MySound("sound/cube_fall.wav", false));
+	slide_sound.reset(new MySound("sound/cube_slide.wav", false));
+
 	vector<string> file_names{ "texture/mario.png","texture/luigi.png","texture/kinopio.png",
 	"texture/koopa.png" ,"texture/goomba.png" ,"texture/peach.png" };
 	glGenTextures(6, Cube::texture);
@@ -143,6 +149,7 @@ bool Cube::try_slide(const string& dir) {
 	if (this->state == "IDLE") {
 		this->state = "SLIDE";
 		this->dir = dir;
+		slide_sound->play();
 		return true;
 	}
 	else {
@@ -153,6 +160,7 @@ bool Cube::try_fall() {
 	if (this->state == "IDLE") {
 		this->state = "FALL";
 		this->dir = "NONE";
+		fall_sound->play();
 		return true;
 	}
 	else {

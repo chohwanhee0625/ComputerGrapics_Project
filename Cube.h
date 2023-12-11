@@ -16,6 +16,10 @@ class Cube {
 	static Shape shape;
 	static unsigned int texture[6];
 	static unique_ptr<MySound> move_sound;
+	static unique_ptr<MySound> fall_sound;
+	static unique_ptr<MySound> slide_sound;
+
+
 
 	glm::mat4 world, normal_world, coord_space{ 1 };
 	glm::mat4 S{ glm::scale(glm::mat4(1),glm::vec3(1,2,1)) }, T{ 1 }, R{ 1 };
