@@ -6,31 +6,12 @@ static vector<Vector2> textures{ {0,0},{0,1},{1,1},{1,0} };
 static vector<int> indeices{ 0,1,2,2,3,0 };
 Shape UI::shape{ vertices,normals,textures,indeices };
 
-void UI::load(const string& img_name) {
+void UI::Init_buffer() {
 	shape.init_buffer();
-	int widthImg, heightImg, numberOfChannel;
-	unsigned char* data = my_load_image(img_name.c_str(), &widthImg, &heightImg, &numberOfChannel, false);
-
-	if (data != NULL) {
-		glGenTextures(1, &texture);
-
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-		if (numberOfChannel == 4) {
-			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		}
-		else if (numberOfChannel == 3) {
-			glTexImage2D(GL_TEXTURE_2D, 0, numberOfChannel, widthImg, heightImg, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		}
-		my_image_free(data);
-	}
-	else {
-		cout << "fail to load image" << endl;
-	}
+}
+void UI::load(const string& img_name, const char* sound_name, bool loop, float volume) {
+	init_texture(texture, img_name, false);
+	sound.reset(new MySound(sound_name, loop, volume));
 }
 
 void UI::draw() const {
@@ -65,7 +46,6 @@ void UI::chage_img(const string& new_img_name) {
 	unsigned char* data = my_load_image(new_img_name.c_str(), &widthImg, &heightImg, &numberOfChannel);
 
 	if (data != NULL) {
-
 		glBindTexture(GL_TEXTURE_2D, texture);
 
 		if (numberOfChannel == 4) {
@@ -95,4 +75,12 @@ bool UI::isIn(float x, float y) {
 		return true;
 	}
 	return false;
+}
+
+void UI::play_sound() {
+	sound->play();
+}
+
+void UI::stop_sound() {
+	sound->stop();
 }
