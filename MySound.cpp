@@ -1,23 +1,24 @@
 #include "MySound.h"
 FMOD::System* MySound::g_sound_system;
 
-MySound::MySound(const char* path, bool loop) {
+MySound::MySound(const char* path, bool loop,float volume) {
 	if (loop) {
-		auto result = g_sound_system->createSound(path, FMOD_LOOP_NORMAL, 0, &my_sound);
+		auto result = g_sound_system->createSound(path, FMOD_LOOP_NORMAL, 0, &m_sound);
 		if (result != FMOD_OK) {
-			std::cerr << "사운드 로딩 실패: " << path <<std::endl;
+			std::cerr << "사운드 로딩 실패: " << result <<std::endl;
 		}	
 	}
 	else {
-		auto result = g_sound_system->createSound(path, FMOD_DEFAULT, 0, &my_sound);
+		auto result = g_sound_system->createSound(path, FMOD_DEFAULT, 0, &m_sound);
 		if (result != FMOD_OK) {
 			std::cerr << "사운드 로딩 실패: " << result << std::endl;
 		}
 	}
-	my_channel = nullptr;
+	m_volume = std::max(0.f, std::min(volume, 1.f));
+	m_channel = nullptr;
 }
 MySound::~MySound() {
-	my_sound->release();
+	m_sound->release();
 }
 void MySound::Init() {
 	auto result = FMOD::System_Create(&g_sound_system);
@@ -36,9 +37,10 @@ void MySound::Release() {
 }
 
 void MySound::play(float speed) {
-	g_sound_system->playSound(my_sound, 0, false, &my_channel);
-	my_channel->setPitch(speed);
+	g_sound_system->playSound(m_sound, 0, false, &m_channel);
+	m_channel->setVolume(m_volume);
+	m_channel->setPitch(speed);
 }
 void MySound::stop() {
-	my_channel->stop();
+	m_channel->stop();
 }

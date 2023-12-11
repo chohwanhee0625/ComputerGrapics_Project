@@ -4,10 +4,11 @@
 class MySound {
 	static FMOD::System* g_sound_system;
 
-	FMOD::Sound* my_sound;
-	FMOD::Channel* my_channel;
+	FMOD::Sound* m_sound;
+	FMOD::Channel* m_channel;
+	float m_volume;
 public:
-	MySound(const char* path, bool loop);
+	MySound(const char* path, bool loop, float volume = 0.1f);
 	~MySound();
 	static void Init();
 	static void Release();
