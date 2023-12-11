@@ -11,7 +11,7 @@ unique_ptr<MySound> Cube::slide_sound;
 void Cube::load() {
 	shape.init_buffer();
 	move_sound.reset(new MySound("sound/cube_move.wav", false));
-	fall_sound.reset(new MySound("sound/cube_fall.wav", false));
+	fall_sound.reset(new MySound("sound/cube_fall.wav", true));
 	slide_sound.reset(new MySound("sound/cube_slide.wav", false));
 
 	vector<string> file_names{ "texture/mario.png","texture/luigi.png","texture/kinopio.png",
@@ -181,6 +181,8 @@ void Cube::set_Idle() {
 	state = "IDLE";
 	dir = "NONE";
 	move_sound->stop();
+	fall_sound->stop();
+	slide_sound->stop();
 }
 
 
