@@ -88,7 +88,7 @@ void GameManager::load_game() {
 	GoalTile::load();
 	UI::Init_buffer();
 	stage_clear.reset(new MySound("sound/clear.wav", false, 1.f));
-	bg.load("texture/background.png", "sound/bgm.wav", true, 0.3f);
+	bg.load("texture/background.png", "sound/bgm.wav", true);
 	bg.play_sound();
 	play_button.load("texture/play_button.png","sound/click_button.wav");
 	ending.load("texture/congratulation.png", "sound/victory.mp3", false, 1.f);
@@ -139,6 +139,7 @@ void GameManager::load_stage() {
 			glm::vec3 e, a, u;
 			iss >> e.x >> e.y >> e.z >> a.x >> a.y >> a.z >> u.x >> u.y >> u.z;
 			camera.set_view(e, a, u);
+			light.pos = e;
 		}
 		else if (token == "CI") {
 			float l, r, t, b;
